@@ -1,0 +1,10 @@
+
+
+#ifndef SOCKETS_2024C1_VICKYA5_CLIENT_H
+#define SOCKETS_2024C1_VICKYA5_CLIENT_H
+
+
+class client {};
+
+
+#endif  // SOCKETS_2024C1_VICKYA5_CLIENT_H
