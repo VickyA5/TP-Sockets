@@ -1,19 +1,19 @@
-#include <stdio.h>
-#include <assert.h>
-#include <string.h>
-#include <errno.h>
-
-#include <sys/socket.h>
-#include <sys/types.h>
-#include <arpa/inet.h>
-#include <netdb.h>
-#include <unistd.h>
-
-#include "socket.h"
-#include "resolver.h"
-#include "liberror.h"
+#include "common_socket.h"
 
 #include <stdexcept>
+
+#include <arpa/inet.h>
+#include <assert.h>
+#include <errno.h>
+#include <netdb.h>
+#include <stdio.h>
+#include <string.h>
+#include <sys/socket.h>
+#include <sys/types.h>
+#include <unistd.h>
+
+#include "common_liberror.h"
+#include "common_resolver.h"
 
 Socket::Socket(
         const char *hostname,

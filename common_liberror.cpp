@@ -17,12 +17,13 @@
 #undef _GNU_SOURCE
 #undef GNU_SOURCE
 
-#include <errno.h>
-#include <cstdio>
+#include "common_liberror.h"
+
 #include <cstdarg>
+#include <cstdio>
 #include <cstring>
 
-#include "liberror.h"
+#include <errno.h>
 
 LibError::LibError(int error_code, const char* fmt, ...) noexcept {
    /* Aquí empieza la magia arcana proveniente de C.

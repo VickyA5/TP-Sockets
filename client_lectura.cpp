@@ -20,7 +20,7 @@ int main(int argc, const char* argv[]) {
             while (std::getline(archivo, linea)) {
                 if (!linea.empty() && linea[0] != '#') {
                     clientProtocolo.enviar_accion(linea);
-                    clientProtocolo.recibir_mensaje();
+                    clientProtocolo.recibir_respuesta();
                 }
             }
             archivo.close();

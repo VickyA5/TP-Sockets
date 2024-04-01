@@ -1,9 +1,10 @@
 
 #ifndef SOCKETS_2024C1_VICKYA5_SERVIDOR_H
 #define SOCKETS_2024C1_VICKYA5_SERVIDOR_H
-#include "socket.h"
 #include <iostream>
 #include <vector>
+
+#include "common_socket.h"
 
 #define JUMP "JUMP"
 #define UPPERCUT "UPPERCUT"
@@ -20,6 +21,7 @@ private:
     Socket aceptador;
     //Devuelve true si se recibió la instrucción NOP
     bool seRecibioNOP(const std::vector<unsigned char>& datos);
+    int cantAcciones;
 
 public:
     Servidor(const char *nombre_aceptador);

@@ -1,5 +1,5 @@
 
-#include "servidor_protocolo.h"
+#include "server_protocolo.h"
 
 //Interpreta de a una linea de acciones hasta encontrar un NOP
 std::vector<uint16_t> ServidorProtocolo::interpretar_acciones(const std::vector<uint8_t>& buffer) {

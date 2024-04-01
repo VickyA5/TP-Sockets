@@ -1,9 +1,11 @@
 
-#include "servidor.h"
-#include "liberror.h"
-#include "servidor_protocolo.h"
-#include <arpa/inet.h>
 #include <cstring>
+
+#include <arpa/inet.h>
+
+#include "common_liberror.h"
+#include "server_protocolo.h"
+#include "server_servidor.h"
 
 Servidor::Servidor(const char *nombre_aceptador) :
         aceptador(nombre_aceptador) {}

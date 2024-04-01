@@ -36,6 +36,14 @@ std::vector<uint8_t> ClientProtocolo::serializar(const std::string& linea) {
     return resultado;
 }
 
-void ClientProtocolo::recibir_mensaje() {
-
+void ClientProtocolo::recibir_respuesta() {
+    std::vector<char> buffer(CANT_BYTES_RECIBIR_POR_PROTOCOLO);
+    bool was_closed = false;
+    skt.recvall(buffer.data(), CANT_BYTES_RECIBIR_POR_PROTOCOLO, &was_closed);
+    if (was_closed) {
+        throw LibError(errno, "No se pudo recibir el mensaje del servidor\n");
+    }
+    std::vector<char> buffer_convertido =
+            conversion_endianness(buffer);
+    mostrar_mensaje(buffer_convertido);
 }

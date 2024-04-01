@@ -1,18 +1,18 @@
-#include "resolver.h"
-#include "resolvererror.h"
-#include "liberror.h"
-
-#include <stdio.h>
-#include <string.h>
-#include <errno.h>
-
-#include <sys/socket.h>
-#include <sys/types.h>
-#include <arpa/inet.h>
-#include <netdb.h>
-#include <unistd.h>
+#include "common_resolver.h"
 
 #include <stdexcept>
+
+#include <arpa/inet.h>
+#include <errno.h>
+#include <netdb.h>
+#include <stdio.h>
+#include <string.h>
+#include <sys/socket.h>
+#include <sys/types.h>
+#include <unistd.h>
+
+#include "common_liberror.h"
+#include "common_resolvererror.h"
 
 Resolver::Resolver(
         const char* hostname,

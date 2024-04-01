@@ -3,11 +3,12 @@
 #define SOCKETS_2024C1_VICKYA5_CLIENT_PROTOCOLO_H
 
 #include <iostream>
-#include <string>
-#include <vector>
 #include <sstream>
+#include <string>
 #include <unordered_map>
-#include "socket.h"
+#include <vector>
+
+#include "common_socket.h"
 
 class ClientProtocolo {
 
@@ -32,7 +33,7 @@ public:
     /*
      *
      * */
-    void recibir_mensaje();
+    void recibir_respuesta();
 };
 
 
