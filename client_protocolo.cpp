@@ -12,17 +12,17 @@ ClientProtocolo::ClientProtocolo(const char *hostname, const char *servicio)
                 {"HIT", 0x05}
         }) {}
 
-void ClientProtocolo::enviarAccion(const std::string& linea) {
-    std::vector<unsigned char> serializado = serializar(linea);
+void ClientProtocolo::enviar_accion(const std::string& linea) {
+    std::vector<uint8_t> serializado = serializar(linea);
     bool fue_cerrado = false;
     uint8_t tamanio = sizeof(uint8_t) * linea.size();
     socket.sendall(serializado.data(), tamanio,  &fue_cerrado);
 }
 
-std::vector<unsigned char> ClientProtocolo::serializar(const std::string& linea) {
+std::vector<uint8_t> ClientProtocolo::serializar(const std::string& linea) {
     std::istringstream accion_stream(linea);
     std::string accion;
-    std::vector<unsigned char> resultado;
+    std::vector<uint8_t> resultado;
     accion_stream >> std::ws;
     while (std::getline(accion_stream, accion, ' ')) {
         if (!accion.empty()) {
@@ -34,4 +34,8 @@ std::vector<unsigned char> ClientProtocolo::serializar(const std::string& linea)
     }
     resultado.push_back(acciones.at("NOP"));
     return resultado;
+}
+
+void ClientProtocolo::recibir_mensaje() {
+
 }

@@ -14,17 +14,25 @@ class ClientProtocolo {
 private:
     const std::unordered_map<std::string, unsigned char> acciones;
     Socket socket;
-    //Recibe una serie de acciones, toma cada una por separado y la serializa
-    //de acuerdo con el protocolo del juego. Luego las devuelve en un vector.
-    std::vector<unsigned char> serializar(const std::string& acciones);
+
+    /*
+     * Recibe una serie de acciones, toma cada una por separado y la serializa
+     * de acuerdo con el protocolo del juego. Luego las devuelve en un vector.
+     */
+    std::vector<uint8_t> serializar(const std::string& acciones);
 
 public:
     ClientProtocolo(const char *hostname, const char *linea);
 
-    //Envía al socket las acciones serializadas sin modificarlas.
-    void enviarAccion(const std::string& linea);
+    /*
+     * Envía al socket las acciones serializadas sin modificarlas.
+     */
+    void enviar_accion(const std::string& linea);
 
-
+    /*
+     *
+     * */
+    void recibir_mensaje();
 };
 
 
