@@ -48,11 +48,16 @@ private:
                          std::vector<uint16_t>& acciones_interpretadas, int& cantAcciones);
 
     /*
-     * Agrega la accion recibida al vector de datos en formato ascii, seguida
-     * de un caracter de espacio también en espacio ascii. Incrementa cantAcciones
-     * en uno.
+     * Agrega la accion recibida al vector de datos en formato ascii, y previamente
+     * un caracter de espacio también en ascii. Incrementa cantAcciones en uno.
      * */
     void agregar_accion(const std::string& accion, std::vector<uint16_t>& datos, int& cantAcciones);
+
+    /*
+     * Idem con el método anterior, pero al ser la primer accion no le agrega un espacio adelante.
+     * */
+    void agregar_primer_accion(const std::string& accion, std::vector<uint16_t>& datos,
+                                                  int& cantAcciones);
 
 public:
     /*

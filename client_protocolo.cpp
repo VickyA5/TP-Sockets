@@ -68,7 +68,7 @@ std::vector<char> ClientProtocolo::convertir_endianness(const std::vector<char> 
 
     size_t tam_buffer_convertido = buffer.size() - 2;
     std::vector<char> buffer_convertido(tam_buffer_convertido);
-    // Las dos primeras posiciones son del header, las descarto.
+    // Las dos primeras posiciones (bytes) son del header, las descarto.
     const char* ptr_original = &buffer[2];
     char* ptr_nuevo = &buffer_convertido[0];
 
@@ -87,7 +87,7 @@ std::vector<char> ClientProtocolo::convertir_endianness(const std::vector<char> 
 
 void ClientProtocolo::imprimir_respuesta(const std::vector<char>& buffer) {
     for (const char& byte: buffer) {
-        std::cout << std::hex << (int)byte << " ";
+        std::cout << byte << " ";
     }
     std::cout << std::endl;
 }

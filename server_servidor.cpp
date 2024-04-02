@@ -57,7 +57,7 @@ void Servidor::enviar_mensaje() {
     }
 }
 
-// REVISAR
+// No se si interpreto mal el resultado o me agrega ceros de más
 std::vector<char> Servidor::serializar_acciones(const std::vector<std::uint16_t>& acciones) {
     std::vector<char> buffer_serializado(acciones.size() * sizeof(std::uint16_t));
 

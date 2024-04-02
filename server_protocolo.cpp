@@ -20,6 +20,10 @@ std::vector<uint16_t> ServidorProtocolo::interpretar_acciones(const std::vector<
             case 0x01:  // JUMP
                 interpretar_jump(buffer, i, acciones_interpretadas, cantAcciones);
                 break;
+            case 0x02:  // RIGHT
+                agregar_accion(RIGHT, acciones_interpretadas, cantAcciones);
+                avanzar_buffer(i, 1);
+                break;
             case 0x03:  // LEFT
                 interpretar_left(buffer, i, acciones_interpretadas, cantAcciones);
                 break;
@@ -44,9 +48,15 @@ void ServidorProtocolo::avanzar_buffer(size_t& index, size_t cantidad) { index +
 void ServidorProtocolo::interpretar_jump(const std::vector<uint8_t>& buffer, size_t& index,
                                          std::vector<uint16_t>& acciones_interpretadas,
                                          int& cantAcciones) {
+
     if (index + 2 < buffer.size() && buffer[index + 1] == 0x01 && buffer[index + 2] == 0x05) {
-        agregar_accion(UPPERCUT, acciones_interpretadas, cantAcciones);
-        avanzar_buffer(index, 3);
+        if (index == 0) {
+            agregar_primer_accion(UPPERCUT, acciones_interpretadas, cantAcciones);
+            avanzar_buffer(index, 3);
+        } else {
+            agregar_accion(UPPERCUT, acciones_interpretadas, cantAcciones);
+            avanzar_buffer(index, 3);
+        }
     } else {
         agregar_accion(JUMP, acciones_interpretadas, cantAcciones);
         avanzar_buffer(index, 1);
@@ -58,8 +68,13 @@ void ServidorProtocolo::interpretar_left(const std::vector<uint8_t>& buffer, siz
                                          int& cantAcciones) {
     if (index + 3 < buffer.size() && buffer[index + 1] == 0x02 && buffer[index + 2] == 0x01 &&
         buffer[index + 3] == 0x05) {
-        agregar_accion(HIGHKICK, acciones_interpretadas, cantAcciones);
-        avanzar_buffer(index, 4);
+        if (index == 0) {
+            agregar_primer_accion(HIGHKICK, acciones_interpretadas, cantAcciones);
+            avanzar_buffer(index, 4);
+        } else {
+            agregar_accion(HIGHKICK, acciones_interpretadas, cantAcciones);
+            avanzar_buffer(index, 4);
+        }
     } else {
         agregar_accion(LEFT, acciones_interpretadas, cantAcciones);
         avanzar_buffer(index, 1);
@@ -70,8 +85,13 @@ void ServidorProtocolo::interpretar_hit(const std::vector<uint8_t>& buffer, size
                                         std::vector<uint16_t>& acciones_interpretadas,
                                         int& cantAcciones) {
     if (index + 2 < buffer.size() && buffer[index + 1] == 0x04 && buffer[index + 2] == 0x03) {
-        agregar_accion(SIDEKICK, acciones_interpretadas, cantAcciones);
-        avanzar_buffer(index, 3);
+        if (index == 0) {
+            agregar_primer_accion(SIDEKICK, acciones_interpretadas, cantAcciones);
+            avanzar_buffer(index, 3);
+        } else {
+            agregar_accion(SIDEKICK, acciones_interpretadas, cantAcciones);
+            avanzar_buffer(index, 3);
+        }
     } else {
         agregar_accion(HIT, acciones_interpretadas, cantAcciones);
         avanzar_buffer(index, 1);
@@ -81,10 +101,22 @@ void ServidorProtocolo::interpretar_hit(const std::vector<uint8_t>& buffer, size
 // Me guarda el ascii de la acción que se le pasa en el vector de datos.
 void ServidorProtocolo::agregar_accion(const std::string& accion, std::vector<uint16_t>& datos,
                                        int& cantAcciones) {
+    uint16_t espacio = 32;  // Espacio en ascii
+    datos.push_back(espacio);
+
     std::vector<uint8_t> bytes_accion(accion.begin(), accion.end());
     std::transform(bytes_accion.begin(), bytes_accion.end(), std::back_inserter(datos),
                    [](uint8_t byte) { return static_cast<uint16_t>(byte); });
-    uint16_t espacio = 32;  // Espacio en ascii
-    datos.push_back(espacio);
+
+    cantAcciones += 1;
+}
+
+void ServidorProtocolo::agregar_primer_accion(const std::string& accion, std::vector<uint16_t>& datos,
+                                       int& cantAcciones) {
+
+    std::vector<uint8_t> bytes_accion(accion.begin(), accion.end());
+    std::transform(bytes_accion.begin(), bytes_accion.end(), std::back_inserter(datos),
+                   [](uint8_t byte) { return static_cast<uint16_t>(byte); });
+
     cantAcciones += 1;
 }
