@@ -18,6 +18,9 @@ void ClientProtocolo::enviar_accion(const std::string& linea) {
     std::vector<uint8_t> serializado = serializar(linea);
     bool fue_cerrado = false;
     uint8_t tamanio = sizeof(uint8_t) * serializado.size();
+    //Ya que por protocolo no se envía un header, debo enviar primero el tamaño
+    //para que el server sepa cuánto va a recibir.
+    socket.sendall(&tamanio, sizeof(tamanio), &fue_cerrado);
     socket.sendall(serializado.data(), tamanio, &fue_cerrado);
     if (fue_cerrado) {
         throw LibError(errno, "Error: no se pudo enviar el mensaje del cliente, "
@@ -75,7 +78,6 @@ std::vector<char> ClientProtocolo::convertir_endianness(const std::vector<char> 
         // Copio el valor convertido al nuevo buffer
         *(reinterpret_cast<std::uint16_t*>(ptr_nuevo)) = valor_convertido;
 
-        // Avanzar punteros
         ptr_nuevo += sizeof(std::uint16_t);
         ptr_original += sizeof(std::uint16_t);
     }

@@ -16,34 +16,39 @@ Servidor::Servidor(const char* nombre_aceptador): aceptador(nombre_aceptador) {
 int Servidor::establecer_conexion() {
     Socket peer = aceptador.accept();
     aceptador = std::move(peer);
-    bool was_closed = false;
-    std::vector<uint16_t> acciones_interpretadas;
-    while (!was_closed) {
-        acciones_interpretadas = recibir_acciones(was_closed);
-        if (!was_closed)  // ACA SE ESTA CERRANDO
+    bool conectado = true;
+    while (conectado) {
+        recibir_acciones(&conectado);
+        if (!conectado)
             break;
-        enviar_mensaje(acciones_interpretadas);
-        // imprimir
+        enviar_mensaje();
     }
     return 0;
 }
 
-std::vector<uint16_t> Servidor::recibir_acciones(bool& was_closed) {
-
-    std::vector<uint8_t> buffer(20);
-    // int bytes_recibidos = 0;
-    while (not was_closed) {
-        aceptador.recvsome(buffer.data(), 3, &was_closed);
+void Servidor::recibir_acciones(bool *conectado) {
+    bool was_closed_tamanio = false;
+    uint8_t tamanio = 0;
+    //Primero recibo el tamaño del mensaje que contiene a las acciones
+    aceptador.recvall(&tamanio, sizeof(tamanio), &was_closed_tamanio );
+    if (was_closed_tamanio) {
+        *conectado = false;
+        return;
+    }
+    bool was_closed_mensaje = false;
+    std::vector<uint8_t> buffer(tamanio);
+    aceptador.recvall(buffer.data(), tamanio, &was_closed_mensaje);
+    if (was_closed_mensaje) {
+        *conectado = false;
+        return;
     }
     ServidorProtocolo protocolo;
-    std::vector<uint16_t> acciones_realizadas =
-            protocolo.interpretar_acciones(buffer, cantAcciones);
-    return acciones_realizadas;
+    acciones = protocolo.interpretar_acciones(buffer, cantAcciones);
 }
 
-void Servidor::enviar_mensaje(const std::vector<uint16_t>& acciones_interpretadas) {
+void Servidor::enviar_mensaje() {
     // serializar mensaje teniendo en cuenta el endianess y sendall
-    std::vector<char> acciones_serializadas = serializar_acciones(acciones_interpretadas);
+    std::vector<char> acciones_serializadas = serializar_acciones(acciones);
     bool was_closed = false;
     aceptador.sendall(acciones_serializadas.data(), acciones_serializadas.size() * sizeof(char),
                       &was_closed);

@@ -13,6 +13,7 @@ class Servidor {
 private:
     Socket aceptador;
     int cantAcciones;
+    std::vector<uint16_t> acciones;
 
     /*
      * Devuelve true si se recibió la instrucción NOP
@@ -33,13 +34,13 @@ public:
      * con los combos correspondientes en ascii. La interpretación de los combos
      * se delega a ServidorProtocolo.
      * */
-    std::vector<uint16_t> recibir_acciones(bool& was_closed);
+    void recibir_acciones(bool *conectado);
 
     /*
      * Envía las acciones ya con los combos correspondientes al socket del cliente
      * de forma serializada.
      * */
-    void enviar_mensaje(const std::vector<uint16_t>& acciones_interpretadas);
+    void enviar_mensaje();
 
     /*
      * Devuelve las acciones serializadas teniendo en cuenta la conversión de
