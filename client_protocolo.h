@@ -10,11 +10,13 @@
 
 #include "common_socket.h"
 
+#define CANT_BYTES_RESPUESTA 20
+
 class ClientProtocolo {
 
 private:
-    const std::unordered_map<std::string, unsigned char> acciones;
     Socket socket;
+    const std::unordered_map<std::string, unsigned char> acciones;
 
     /*
      * Recibe una serie de acciones, toma cada una por separado y la serializa
@@ -23,7 +25,7 @@ private:
     std::vector<uint8_t> serializar(const std::string& acciones);
 
 public:
-    ClientProtocolo(const char *hostname, const char *linea);
+    ClientProtocolo(const char* hostname, const char* linea);
 
     /*
      * Envía al socket las acciones serializadas sin modificarlas.
@@ -34,8 +36,17 @@ public:
      *
      * */
     void recibir_respuesta();
-};
 
+    /*
+     *
+     * */
+    void imprimir_respuesta(const std::vector<char>& buffer);
+
+    /*
+     *
+     * */
+    std::vector<char> convertir_endianness(std::vector<char> vector);
+};
 
 
 #endif  // SOCKETS_2024C1_VICKYA5_CLIENT_PROTOCOLO_H
