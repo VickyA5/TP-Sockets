@@ -18,17 +18,17 @@ std::vector<uint16_t> ServidorProtocolo::interpretar_acciones(const std::vector<
                 return acciones_interpretadas;
                 break;
             case 0x01:  // JUMP
-                interpretar_jump(buffer, i, acciones_interpretadas);
+                interpretar_jump(buffer, i, acciones_interpretadas, cantAcciones);
                 break;
             case 0x03:  // LEFT
-                interpretar_left(buffer, i, acciones_interpretadas);
+                interpretar_left(buffer, i, acciones_interpretadas, cantAcciones);
                 break;
             case 0x04:  // DUCK
-                agregar_accion(DUCK, acciones_interpretadas);
+                agregar_accion(DUCK, acciones_interpretadas, cantAcciones);
                 avanzar_buffer(i, 1);
                 break;
             case 0x05:  // HIT
-                interpretar_hit(buffer, i, acciones_interpretadas);
+                interpretar_hit(buffer, i, acciones_interpretadas, cantAcciones);
                 break;
             default:
                 avanzar_buffer(i, 1);  // NO DEBERÍA PASAR
@@ -42,35 +42,38 @@ std::vector<uint16_t> ServidorProtocolo::interpretar_acciones(const std::vector<
 void ServidorProtocolo::avanzar_buffer(size_t& index, size_t cantidad) { index += cantidad; }
 
 void ServidorProtocolo::interpretar_jump(const std::vector<uint8_t>& buffer, size_t& index,
-                                         std::vector<uint16_t>& acciones_interpretadas) {
+                                         std::vector<uint16_t>& acciones_interpretadas,
+                                         int& cantAcciones) {
     if (index + 2 < buffer.size() && buffer[index + 1] == 0x01 && buffer[index + 2] == 0x05) {
-        agregar_accion(UPPERCUT, acciones_interpretadas);
+        agregar_accion(UPPERCUT, acciones_interpretadas, cantAcciones);
         avanzar_buffer(index, 3);
     } else {
-        agregar_accion(JUMP, acciones_interpretadas);
+        agregar_accion(JUMP, acciones_interpretadas, cantAcciones);
         avanzar_buffer(index, 1);
     }
 }
 
 void ServidorProtocolo::interpretar_left(const std::vector<uint8_t>& buffer, size_t& index,
-                                         std::vector<uint16_t>& acciones_interpretadas) {
+                                         std::vector<uint16_t>& acciones_interpretadas,
+                                         int& cantAcciones) {
     if (index + 3 < buffer.size() && buffer[index + 1] == 0x02 && buffer[index + 2] == 0x01 &&
         buffer[index + 3] == 0x05) {
-        agregar_accion(HIGHKICK, acciones_interpretadas);
+        agregar_accion(HIGHKICK, acciones_interpretadas, cantAcciones);
         avanzar_buffer(index, 4);
     } else {
-        agregar_accion(LEFT, acciones_interpretadas);
+        agregar_accion(LEFT, acciones_interpretadas, cantAcciones);
         avanzar_buffer(index, 1);
     }
 }
 
 void ServidorProtocolo::interpretar_hit(const std::vector<uint8_t>& buffer, size_t& index,
-                                        std::vector<uint16_t>& acciones_interpretadas) {
+                                        std::vector<uint16_t>& acciones_interpretadas,
+                                        int& cantAcciones) {
     if (index + 2 < buffer.size() && buffer[index + 1] == 0x04 && buffer[index + 2] == 0x03) {
-        agregar_accion(SIDEKICK, acciones_interpretadas);
+        agregar_accion(SIDEKICK, acciones_interpretadas, cantAcciones);
         avanzar_buffer(index, 3);
     } else {
-        agregar_accion(HIT, acciones_interpretadas);
+        agregar_accion(HIT, acciones_interpretadas, cantAcciones);
         avanzar_buffer(index, 1);
     }
 }

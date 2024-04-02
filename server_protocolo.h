@@ -29,7 +29,7 @@ private:
      * concatena el jump.
      * */
     void interpretar_jump(const std::vector<uint8_t>& buffer, size_t& index,
-                          std::vector<uint16_t>& acciones_interpretadas);
+                          std::vector<uint16_t>& acciones_interpretadas, int& cantAcciones);
 
     /*
      * Interpreta las acciones próximas a un left. Si hay un combo que comienza en el left,
@@ -37,7 +37,7 @@ private:
      * concatena el left.
      * */
     void interpretar_left(const std::vector<uint8_t>& buffer, size_t& index,
-                          std::vector<uint16_t>& acciones_interpretadas);
+                          std::vector<uint16_t>& acciones_interpretadas, int& cantAcciones);
 
     /*
      * Interpreta las acciones próximas a un hit. Si hay un combo que comienza en el hit,
@@ -45,7 +45,7 @@ private:
      * concatena el hit.
      * */
     void interpretar_hit(const std::vector<uint8_t>& buffer, size_t& index,
-                         std::vector<uint16_t>& acciones_interpretadas);
+                         std::vector<uint16_t>& acciones_interpretadas, int& cantAcciones);
 
     /*
      * Agrega la accion recibida al vector de datos en formato ascii, seguida
