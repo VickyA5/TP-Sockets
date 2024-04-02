@@ -28,21 +28,12 @@ int Servidor::establecer_conexion() {
     return 0;
 }
 
-/*
- * Como en éste caso no tengo forma de saber cuántos bytes voy a recibir del cliente
- * ya que el mensaje no posee un header, utilizo recvsome y espero que el mensaje tenga menos
- * bytes.
- * */
 std::vector<uint16_t> Servidor::recibir_acciones(bool& was_closed) {
-    std::vector<uint8_t> buffer(CANT_BYTES_MENSAJE);  // No estoy segura si no deberia usar uint16
-    int bytes_recibidos = aceptador.recvsome(buffer.data(), CANT_BYTES_MENSAJE, &was_closed);
-    // Ya puse en el buffer las acciones serializadas.
-    if (was_closed || bytes_recibidos == -1) {
-        if (was_closed) {
-            throw LibError(errno, "Error: el socket del cliente se cerró");
-        } else {
-            throw LibError(errno, "Error al recibir datos del cliente");
-        }
+
+    std::vector<uint8_t> buffer(20);
+    // int bytes_recibidos = 0;
+    while (not was_closed) {
+        aceptador.recvsome(buffer.data(), 3, &was_closed);
     }
     ServidorProtocolo protocolo;
     std::vector<uint16_t> acciones_realizadas =

@@ -6,15 +6,7 @@
 
 #include "common_socket.h"
 
-#define JUMP "JUMP"
-#define UPPERCUT "UPPERCUT"
-#define DUCK "DUCK"
-#define HIT "HIT"
-#define LEFT "LEFT"
-#define RIGHT "RIGHT"
-#define SIDEKICK "SIDEKICK"
-#define HIGHKICK "HIGHKICK"
-#define CANT_BYTES_MENSAJE 20
+#define CANT_BYTES_MENSAJE 3
 
 class Servidor {
 
