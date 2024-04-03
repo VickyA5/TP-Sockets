@@ -43,7 +43,7 @@ public:
     /*
      *
      * */
-    std::vector<char> convertir_endianness(std::vector<char> vector);
+    std::vector<char> convertir_endianness(std::vector<uint16_t> vector);
 };
 
 

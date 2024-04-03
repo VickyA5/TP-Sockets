@@ -49,26 +49,22 @@ void Servidor::recibir_acciones(bool* conectado) {
 }
 
 void Servidor::enviar_mensaje() {
-    // serializar mensaje teniendo en cuenta el endianess y sendall
-    std::vector<char> acciones_serializadas = serializar_acciones(acciones);
+    std::vector<uint16_t > acciones_serializadas = serializar_acciones();
     bool was_closed = false;
-    aceptador.sendall(acciones_serializadas.data(), acciones_serializadas.size() * sizeof(char),
+    aceptador.sendall(acciones_serializadas.data(),
+                      acciones_serializadas.size() * sizeof(uint16_t),
                       &was_closed);
     if (was_closed) {
         throw LibError(errno, "Error: se cerro el socket del cliente.");
     }
 }
-
-// No se si interpreto mal el resultado o me agrega ceros de más
-std::vector<char> Servidor::serializar_acciones(const std::vector<std::uint16_t>& acciones) {
-    std::vector<char> buffer_serializado(acciones.size() * sizeof(std::uint16_t));
+//No estoy del tod0 segura si es necesario
+std::vector<uint16_t> Servidor::serializar_acciones() {
+    std::vector<uint16_t> buffer_serializado(acciones.size() * sizeof(std::uint16_t));
 
     for (std::size_t i = 0; i < acciones.size(); ++i) {
         uint16_t elemento_serializado = htons(acciones[i]);  // Convertir a big-endian
-
-        // Copia los bytes de elemento_serializado al buffer_serializado
-        std::memcpy(&buffer_serializado[i * sizeof(std::uint16_t)], &elemento_serializado,
-                    sizeof(std::uint16_t));
+        buffer_serializado.push_back(elemento_serializado);
     }
 
     return buffer_serializado;

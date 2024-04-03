@@ -99,6 +99,7 @@ void ServidorProtocolo::interpretar_hit(const std::vector<uint8_t>& buffer, size
 }
 
 // Me guarda el ascii de la acción que se le pasa en el vector de datos.
+// Al estar almacenando ascii en uint_16, el byte más significativo será 0.
 void ServidorProtocolo::agregar_accion(const std::string& accion, std::vector<uint16_t>& datos,
                                        int& cantAcciones) {
     uint16_t espacio = 32;  // Espacio en ascii
@@ -111,7 +112,6 @@ void ServidorProtocolo::agregar_accion(const std::string& accion, std::vector<ui
     cantAcciones += 1;
 }
 
-//Al estar almacenando ascii en uint_16, el byte más significativo será 0.
 void ServidorProtocolo::agregar_primer_accion(const std::string& accion,
                                               std::vector<uint16_t>& datos, int& cantAcciones) {
 

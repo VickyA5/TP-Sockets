@@ -54,12 +54,12 @@ void ClientProtocolo::recibir_respuesta() {
         throw LibError(errno, "No se pudo recibir la respuesta del servidor\n");
     }
     tamanio_respuesta = ntohs(tamanio_respuesta);
-    // El header indica la cantidad de elementos, pero el ascii de cada caracter se encuentra
-    // almacenado en uint16_t (dos bytes). Además, el tamaño indicado por el header
-    // no incluye los dos bytes del mismo header.
-    std::vector<char> respuesta(tamanio_respuesta * sizeof(uint16_t) + 2);
+    // El tamaño recibido no incluye al header el cual ocupa 2 bytes.
+    // Además, los caracteres están almacenados en uint_16
+    int bytes_recibir = (tamanio_respuesta * sizeof(uint16_t)) + 2;
+    std::vector<uint16_t> respuesta(bytes_recibir);
     bool was_closed_mensaje = false;
-    socket.recvall(respuesta.data(), sizeof(respuesta), &was_closed_mensaje);
+    socket.recvall(respuesta.data(), bytes_recibir, &was_closed_mensaje);
     if (was_closed_mensaje) {
         throw LibError(errno, "No se pudo recibir la respuesta del servidor\n");
     }
@@ -68,27 +68,19 @@ void ClientProtocolo::recibir_respuesta() {
 }
 
 
-std::vector<char> ClientProtocolo::convertir_endianness(const std::vector<char> buffer) {
+std::vector<char> ClientProtocolo::convertir_endianness(const std::vector<uint16_t> buffer) {
 
-    size_t tam_buffer_convertido = buffer.size() - 2;
+    size_t tam_buffer_convertido = buffer.size() - 1;
     std::vector<char> buffer_convertido(tam_buffer_convertido);
-    // Las dos primeras posiciones (bytes) son del header, las descarto.
-    const char* ptr_original = &buffer[2];
-    char* ptr_nuevo = &buffer_convertido[0];
-
-    for (size_t i = 2; i < tam_buffer_convertido; i += sizeof(std::uint16_t)) {
-        std::uint16_t valor_original = *(reinterpret_cast<const std::uint16_t*>(ptr_original));
-        std::uint16_t valor_convertido = ntohs(valor_original);
-        // Copio el valor convertido al nuevo buffer
-        *(reinterpret_cast<std::uint16_t*>(ptr_nuevo)) = valor_convertido;
-
-        ptr_nuevo += sizeof(std::uint16_t);
-        ptr_original += sizeof(std::uint16_t);
+    // La primera posición es del header, las descarto
+    for (size_t i = 1; i < tam_buffer_convertido; i++) {
+        uint16_t convertido_dos_bytes = ntohs(buffer[i]);
+        char convertido_byte_menos_significativo = (char) convertido_dos_bytes;
+        buffer_convertido[i-1] = convertido_byte_menos_significativo;
     }
 
     return buffer_convertido;
 }
-
 void ClientProtocolo::imprimir_respuesta(const std::vector<char>& buffer) {
     for (const char& byte: buffer) {
         std::cout << byte << " ";

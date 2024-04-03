@@ -45,7 +45,7 @@ public:
      * Devuelve las acciones serializadas teniendo en cuenta la conversión de
      * endiannes necesaria.
      * */
-    std::vector<char> serializar_acciones(const std::vector<std::uint16_t>& acciones);
+    std::vector<uint16_t> serializar_acciones();
 
     /*
      * Imprime por pantalla el numero de acciones realizadas.
