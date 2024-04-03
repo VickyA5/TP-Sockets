@@ -18,8 +18,8 @@ void ClientProtocolo::enviar_accion(const std::string& linea) {
     std::vector<uint8_t> serializado = serializar(linea);
     bool fue_cerrado = false;
     uint8_t tamanio = sizeof(uint8_t) * serializado.size();
-    //Ya que por protocolo no se envía un header, debo enviar primero el tamaño
-    //para que el server sepa cuánto va a recibir.
+    // Ya que por protocolo no se envía un header, debo enviar primero el tamaño
+    // para que el server sepa cuánto va a recibir.
     socket.sendall(&tamanio, sizeof(tamanio), &fue_cerrado);
     socket.sendall(serializado.data(), tamanio, &fue_cerrado);
     if (fue_cerrado) {
@@ -47,23 +47,27 @@ std::vector<uint8_t> ClientProtocolo::serializar(const std::string& linea) {
 
 void ClientProtocolo::recibir_respuesta() {
     uint16_t tamanio_respuesta = 0;
-    bool was_closed = false;
-    socket.recvall(&tamanio_respuesta, 2, &was_closed);  // Recivo header primero
-    if (was_closed) {
+    bool was_closed_tamanio = false;
+    // Recivo el header primero ya que me indica el tamaño.
+    socket.recvall(&tamanio_respuesta, 2, &was_closed_tamanio);
+    if (was_closed_tamanio) {
         throw LibError(errno, "No se pudo recibir la respuesta del servidor\n");
     }
     tamanio_respuesta = ntohs(tamanio_respuesta);
-    std::vector<char> respuesta(tamanio_respuesta);
-    socket.recvall(respuesta.data(), tamanio_respuesta, &was_closed);
-    if (was_closed) {
+    // El header indica la cantidad de elementos, pero el ascii de cada caracter se encuentra
+    // almacenado en uint16_t (dos bytes). Además, el tamaño indicado por el header
+    // no incluye los dos bytes del mismo header.
+    std::vector<char> respuesta(tamanio_respuesta * sizeof(uint16_t) + 2);
+    bool was_closed_mensaje = false;
+    socket.recvall(respuesta.data(), sizeof(respuesta), &was_closed_mensaje);
+    if (was_closed_mensaje) {
         throw LibError(errno, "No se pudo recibir la respuesta del servidor\n");
     }
     std::vector<char> buffer_convertido = convertir_endianness(respuesta);
     imprimir_respuesta(buffer_convertido);
 }
 
-// Convierte de a dos bytes ya que dos bytes representan un caracter en ascii en hexa.
-// Por ejemplo "J" = 0x4A
+
 std::vector<char> ClientProtocolo::convertir_endianness(const std::vector<char> buffer) {
 
     size_t tam_buffer_convertido = buffer.size() - 2;

@@ -4,7 +4,7 @@
 #include <algorithm>
 #include <string>
 
-// Interpreta de a una linea de acciones hasta encontrar un NOP
+// Interpreta de a una linea de acciones hasta encontrar un NOP.
 std::vector<uint16_t> ServidorProtocolo::interpretar_acciones(const std::vector<uint8_t>& buffer,
                                                               int& cantAcciones) {
     std::vector<uint16_t> acciones_interpretadas;
@@ -111,8 +111,9 @@ void ServidorProtocolo::agregar_accion(const std::string& accion, std::vector<ui
     cantAcciones += 1;
 }
 
-void ServidorProtocolo::agregar_primer_accion(const std::string& accion, std::vector<uint16_t>& datos,
-                                       int& cantAcciones) {
+//Al estar almacenando ascii en uint_16, el byte más significativo será 0.
+void ServidorProtocolo::agregar_primer_accion(const std::string& accion,
+                                              std::vector<uint16_t>& datos, int& cantAcciones) {
 
     std::vector<uint8_t> bytes_accion(accion.begin(), accion.end());
     std::transform(bytes_accion.begin(), bytes_accion.end(), std::back_inserter(datos),

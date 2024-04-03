@@ -6,7 +6,6 @@
 
 #include "common_socket.h"
 
-#define CANT_BYTES_MENSAJE 3
 
 class Servidor {
 
@@ -34,7 +33,7 @@ public:
      * con los combos correspondientes en ascii. La interpretación de los combos
      * se delega a ServidorProtocolo.
      * */
-    void recibir_acciones(bool *conectado);
+    void recibir_acciones(bool* conectado);
 
     /*
      * Envía las acciones ya con los combos correspondientes al socket del cliente

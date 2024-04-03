@@ -43,3 +43,5 @@ server
 .*.swp
 *~
 
+#Pruebas
+BORRAR.txt

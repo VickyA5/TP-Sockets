@@ -11,10 +11,11 @@
  */
 int main(int argc, const char* argv[]) {
     try {
-        if (argc == 4) {
+        if (argc == 3) {
             ClientProtocolo clientProtocolo(argv[1], argv[2]);
             std::string linea;
-            std::ifstream archivo(argv[3]);
+            std::string nombre_archivo;
+            std::ifstream archivo(nombre_archivo);
             if (!archivo.is_open()) {
                 return ERROR;
             }
@@ -28,7 +29,7 @@ int main(int argc, const char* argv[]) {
             return 0;
         } else {
             std::cerr << "Llamada inválida, se debe ingresar " << argv[0]
-                      << " <hostname> <servername> <actions.txt>\n";
+                      << " <hostname> <servername> \n";
             return ERROR;
         }
     } catch (const std::exception& err) {

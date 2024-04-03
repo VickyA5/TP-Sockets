@@ -26,11 +26,11 @@ int Servidor::establecer_conexion() {
     return 0;
 }
 
-void Servidor::recibir_acciones(bool *conectado) {
+void Servidor::recibir_acciones(bool* conectado) {
     bool was_closed_tamanio = false;
     uint8_t tamanio = 0;
-    //Primero recibo el tamaño del mensaje que contiene a las acciones
-    aceptador.recvall(&tamanio, sizeof(tamanio), &was_closed_tamanio );
+    // Primero recibo el tamaño del mensaje que contiene a las acciones
+    aceptador.recvall(&tamanio, sizeof(tamanio), &was_closed_tamanio);
     if (was_closed_tamanio) {
         *conectado = false;
         return;
@@ -43,6 +43,8 @@ void Servidor::recibir_acciones(bool *conectado) {
         return;
     }
     ServidorProtocolo protocolo;
+    // Almaceno en un vector de uint16_t ya que el protocolo pide que el header
+    // sea de dos bytes sin signo, aunque los caracteres solo necesitarían un byte cada uno.
     acciones = protocolo.interpretar_acciones(buffer, cantAcciones);
 }
 

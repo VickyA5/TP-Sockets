@@ -57,13 +57,15 @@ private:
      * Idem con el método anterior, pero al ser la primer accion no le agrega un espacio adelante.
      * */
     void agregar_primer_accion(const std::string& accion, std::vector<uint16_t>& datos,
-                                                  int& cantAcciones);
+                               int& cantAcciones);
 
 public:
     /*
      * Dada la serie de acciones, identifica los combos y devuelve la serie de acciones
      * con los combos correspondientes. Debe recibir una serie de acciones válida que
      * finalice con NOP (00).
+     * Además, actualiza la cantidad de acciones realizada. cantAcciones debe estar
+     * previamente inicializado.
      * */
     std::vector<uint16_t> interpretar_acciones(const std::vector<uint8_t>& buffer,
                                                int& cantAcciones);

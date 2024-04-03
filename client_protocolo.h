@@ -10,8 +10,6 @@
 
 #include "common_socket.h"
 
-#define CANT_BYTES_RESPUESTA 20
-
 class ClientProtocolo {
 
 private:
@@ -25,7 +23,7 @@ private:
     std::vector<uint8_t> serializar(const std::string& acciones);
 
 public:
-    ClientProtocolo(const char* hostname, const char* linea);
+    ClientProtocolo(const char* hostname, const char* servicio);
 
     /*
      * Envía al socket las acciones serializadas sin modificarlas.
