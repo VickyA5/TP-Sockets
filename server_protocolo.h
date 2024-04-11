@@ -6,14 +6,21 @@
 #include <string>
 #include <vector>
 
-#define JUMP "JUMP"
-#define UPPERCUT "UPPERCUT"
-#define DUCK "DUCK"
-#define HIT "HIT"
-#define LEFT "LEFT"
-#define RIGHT "RIGHT"
-#define SIDEKICK "SIDEKICK"
-#define HIGHKICK "HIGHKICK"
+#define JUMP_S "JUMP"
+#define UPPERCUT_S "UPPERCUT"
+#define DUCK_S "DUCK"
+#define HIT_S "HIT"
+#define LEFT_S "LEFT"
+#define RIGHT_S "RIGHT"
+#define SIDEKICK_S "SIDEKICK"
+#define HIGHKICK_S "HIGHKICK"
+
+#define NOP_P 0x00
+#define JUMP_P 0x01
+#define RIGHT_P 0x02
+#define LEFT_P 0x03
+#define DUCK_P 0x04
+#define HIT_P 0x05
 
 class ServidorProtocolo {
 

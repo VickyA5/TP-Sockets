@@ -12,26 +12,25 @@ std::vector<uint16_t> ServidorProtocolo::interpretar_acciones(const std::vector<
     while (i < buffer.size()) {
         uint8_t accion_actual = buffer[i];
         switch (accion_actual) {
-            case 0x00:  // NOP
+            case NOP_P:     // "P" de protocolo (el valor hexadecimal)
                 acciones_interpretadas.insert(acciones_interpretadas.begin(),
                                               acciones_interpretadas.size());
                 return acciones_interpretadas;
-                break;
-            case 0x01:  // JUMP
+            case JUMP_P:
                 interpretar_jump(buffer, i, acciones_interpretadas, cantAcciones);
                 break;
-            case 0x02:  // RIGHT
-                agregar_accion(RIGHT, acciones_interpretadas, cantAcciones);
+            case RIGHT_P:
+                agregar_accion(RIGHT_S, acciones_interpretadas, cantAcciones);
                 avanzar_buffer(i, 1);
                 break;
-            case 0x03:  // LEFT
+            case LEFT_P:
                 interpretar_left(buffer, i, acciones_interpretadas, cantAcciones);
                 break;
-            case 0x04:  // DUCK
-                agregar_accion(DUCK, acciones_interpretadas, cantAcciones);
+            case DUCK_P:
+                agregar_accion(DUCK_S, acciones_interpretadas, cantAcciones);
                 avanzar_buffer(i, 1);
                 break;
-            case 0x05:  // HIT
+            case HIT_P:
                 interpretar_hit(buffer, i, acciones_interpretadas, cantAcciones);
                 break;
             default:
@@ -51,14 +50,15 @@ void ServidorProtocolo::interpretar_jump(const std::vector<uint8_t>& buffer, siz
 
     if (index + 2 < buffer.size() && buffer[index + 1] == 0x01 && buffer[index + 2] == 0x05) {
         if (index == 0) {
-            agregar_primer_accion(UPPERCUT, acciones_interpretadas, cantAcciones);
+            // "S" de string (el nombre de la accion)
+            agregar_primer_accion(UPPERCUT_S, acciones_interpretadas, cantAcciones);
             avanzar_buffer(index, 3);
         } else {
-            agregar_accion(UPPERCUT, acciones_interpretadas, cantAcciones);
+            agregar_accion(UPPERCUT_S, acciones_interpretadas, cantAcciones);
             avanzar_buffer(index, 3);
         }
     } else {
-        agregar_accion(JUMP, acciones_interpretadas, cantAcciones);
+        agregar_accion(JUMP_S, acciones_interpretadas, cantAcciones);
         avanzar_buffer(index, 1);
     }
 }
@@ -69,14 +69,14 @@ void ServidorProtocolo::interpretar_left(const std::vector<uint8_t>& buffer, siz
     if (index + 3 < buffer.size() && buffer[index + 1] == 0x02 && buffer[index + 2] == 0x01 &&
         buffer[index + 3] == 0x05) {
         if (index == 0) {
-            agregar_primer_accion(HIGHKICK, acciones_interpretadas, cantAcciones);
+            agregar_primer_accion(HIGHKICK_S, acciones_interpretadas, cantAcciones);
             avanzar_buffer(index, 4);
         } else {
-            agregar_accion(HIGHKICK, acciones_interpretadas, cantAcciones);
+            agregar_accion(HIGHKICK_S, acciones_interpretadas, cantAcciones);
             avanzar_buffer(index, 4);
         }
     } else {
-        agregar_accion(LEFT, acciones_interpretadas, cantAcciones);
+        agregar_accion(LEFT_S, acciones_interpretadas, cantAcciones);
         avanzar_buffer(index, 1);
     }
 }
@@ -86,14 +86,14 @@ void ServidorProtocolo::interpretar_hit(const std::vector<uint8_t>& buffer, size
                                         int& cantAcciones) {
     if (index + 2 < buffer.size() && buffer[index + 1] == 0x04 && buffer[index + 2] == 0x03) {
         if (index == 0) {
-            agregar_primer_accion(SIDEKICK, acciones_interpretadas, cantAcciones);
+            agregar_primer_accion(SIDEKICK_S, acciones_interpretadas, cantAcciones);
             avanzar_buffer(index, 3);
         } else {
-            agregar_accion(SIDEKICK, acciones_interpretadas, cantAcciones);
+            agregar_accion(SIDEKICK_S, acciones_interpretadas, cantAcciones);
             avanzar_buffer(index, 3);
         }
     } else {
-        agregar_accion(HIT, acciones_interpretadas, cantAcciones);
+        agregar_accion(HIT_S, acciones_interpretadas, cantAcciones);
         avanzar_buffer(index, 1);
     }
 }

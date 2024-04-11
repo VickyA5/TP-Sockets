@@ -7,8 +7,9 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
-
 #include "common_socket.h"
+
+#define BYTES_HEADER 2
 
 class ClientProtocolo {
 

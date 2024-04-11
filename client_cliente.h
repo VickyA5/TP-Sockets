@@ -13,9 +13,9 @@ public:
 
     /*
      * Ejecuta el ciclo necesario para el envío de mensajes al servidor y la obtención de
-     * sus respuestas. Devuelve 0 si se pudo abrir el archivo, y -1 en caso contrario.
+     * sus respuestas.
      * */
-    int ejecutar();
+    void ejecutar();
 
     /*
      * Imprime por pantalla las acciones recibidas del servidor.

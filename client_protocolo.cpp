@@ -14,13 +14,12 @@ ClientProtocolo::ClientProtocolo(const char* hostname, const char* servicio):
                   {"DUCK", 0x04},
                   {"HIT", 0x05}}) {}
 
+//QUIZAS QUE EL DICCIONARIO SEA UNA CLASE PARA USARLO TAMB EN SERVER PROTOCOLO?
+
 void ClientProtocolo::enviar_acciones(const std::string& linea) {
     std::vector<uint8_t> serializado = serializar(linea);
     bool fue_cerrado = false;
     uint8_t tamanio = sizeof(uint8_t) * serializado.size();
-    // Ya que por protocolo no se envía un header, debo enviar primero el tamaño
-    // para que el server sepa cuánto va a recibir.
-    socket.sendall(&tamanio, sizeof(tamanio), &fue_cerrado);
     socket.sendall(serializado.data(), tamanio, &fue_cerrado);
     if (fue_cerrado) {
         throw LibError(errno, "Error: no se pudo enviar el mensaje del cliente, "
@@ -49,7 +48,7 @@ std::vector<char> ClientProtocolo::recibir_respuesta() {
     uint16_t tamanio_respuesta = 0;
     bool was_closed_tamanio = false;
     // Recivo el header primero ya que me indica el tamaño.
-    socket.recvall(&tamanio_respuesta, 2, &was_closed_tamanio);
+    socket.recvall(&tamanio_respuesta, BYTES_HEADER, &was_closed_tamanio);
     if (was_closed_tamanio) {
         throw LibError(errno, "No se pudo recibir la respuesta del servidor\n");
     }

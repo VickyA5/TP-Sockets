@@ -26,7 +26,7 @@ Cliente::Cliente(const char* hostname, const char* servicio) :
     return 0;
 }*/
 
-int Cliente::ejecutar() {
+void Cliente::ejecutar() {
     std::string linea;
     while (std::getline(std::cin, linea, '\n')) {
         if (!linea.empty()) {
@@ -35,7 +35,6 @@ int Cliente::ejecutar() {
             imprimir_acciones(respuesta);
         }
     }
-    return 0;
 }
 
 void Cliente::imprimir_acciones(const std::vector<char>& buffer_acciones) {
