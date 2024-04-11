@@ -28,17 +28,12 @@ public:
     /*
      * Envía al socket las acciones serializadas sin modificarlas.
      */
-    void enviar_accion(const std::string& linea);
+    void enviar_acciones(const std::string& linea);
 
     /*
      *
      * */
-    void recibir_respuesta();
-
-    /*
-     *
-     * */
-    void imprimir_respuesta(const std::vector<char>& buffer);
+    std::vector<char> recibir_respuesta();
 
     /*
      *

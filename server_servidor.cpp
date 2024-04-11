@@ -70,4 +70,4 @@ std::vector<uint16_t> Servidor::serializar_acciones() {
     return buffer_serializado;
 }
 
-void Servidor::imprimir_cant_acciones() { std::cout << "Actions: " << cantAcciones; }
+void Servidor::imprimir_cant_acciones() { std::cout << "Actions: " << cantAcciones << std::endl; }
