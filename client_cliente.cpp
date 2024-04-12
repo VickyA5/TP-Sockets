@@ -39,7 +39,7 @@ void Cliente::ejecutar() {
 
 void Cliente::imprimir_acciones(const std::vector<char>& buffer_acciones) {
     for (const char& byte: buffer_acciones) {
-        std::cout << byte << " ";
+        std::cout << byte;
     }
     std::cout << std::endl;
 }

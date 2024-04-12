@@ -12,19 +12,18 @@ class Servidor {
 private:
     Socket aceptador;
     int cantAcciones;
-    std::vector<uint16_t> acciones;
+    std::vector<char> acciones;
 
     /*
      * Devuelve true si se recibió la instrucción NOP
-     * */
-    bool seRecibioNOP(const std::vector<unsigned char>& datos);
+     *
+    bool seRecibioNOP(const std::vector<unsigned char>& datos); */
 
 public:
     explicit Servidor(const char* nombre_aceptador);
 
     /*
-     * Acepta la conexión con un único cliente y realiza el ciclo de recibir mensajes
-     * dicho clientes y responderle-
+     * Realiza el ciclo de recibir mensajes del cliente y responderle.
      * */
     int establecer_conexion();
 
@@ -45,7 +44,7 @@ public:
      * Devuelve las acciones serializadas teniendo en cuenta la conversión de
      * endiannes necesaria.
      * */
-    std::vector<uint16_t> serializar_acciones();
+    std::vector<char> serializar_acciones();
 
     /*
      * Imprime por pantalla el numero de acciones realizadas.

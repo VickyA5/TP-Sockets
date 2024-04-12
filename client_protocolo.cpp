@@ -47,25 +47,22 @@ std::vector<uint8_t> ClientProtocolo::serializar(const std::string& linea) {
 std::vector<char> ClientProtocolo::recibir_respuesta() {
     uint16_t tamanio_respuesta = 0;
     bool was_closed_tamanio = false;
-    // Recivo el header primero ya que me indica el tamaño.
     socket.recvall(&tamanio_respuesta, BYTES_HEADER, &was_closed_tamanio);
     if (was_closed_tamanio) {
         throw LibError(errno, "No se pudo recibir la respuesta del servidor\n");
     }
-    tamanio_respuesta = ntohs(tamanio_respuesta);
-    // El tamaño recibido no incluye al header el cual ocupa 2 bytes.
-    // Además, los caracteres están almacenados en uint_16
-    int bytes_recibir = tamanio_respuesta * sizeof(uint16_t);
-    std::vector<uint16_t> respuesta(bytes_recibir);
+    //tamanio_respuesta = ntohs(tamanio_respuesta);
+    int bytes_recibir = tamanio_respuesta * sizeof(char);
+    std::vector<char> respuesta(bytes_recibir);
     bool was_closed_mensaje = false;
     socket.recvall(respuesta.data(), bytes_recibir, &was_closed_mensaje);
     if (was_closed_mensaje) {
         throw LibError(errno, "No se pudo recibir la respuesta del servidor\n");
     }
-    return convertir_endianness(respuesta);
+    return respuesta;
 }
 
-
+/*
 std::vector<char> ClientProtocolo::convertir_endianness(const std::vector<uint16_t> buffer) {
 
     size_t tam_buffer_convertido = buffer.size() - 1;
@@ -78,5 +75,5 @@ std::vector<char> ClientProtocolo::convertir_endianness(const std::vector<uint16
     }
 
     return buffer_convertido;
-}
+}*/
 
