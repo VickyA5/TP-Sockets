@@ -58,13 +58,9 @@ private:
      * Agrega la accion recibida al vector de datos en formato ascii, y previamente
      * un caracter de espacio también en ascii. Incrementa cantAcciones en uno.
      * */
-    void agregar_accion(const std::string& accion, std::vector<char>& datos, int& cantAcciones);
+    void agregar_accion(const std::string& accion, std::vector<char>& datos, int& cantAcciones,
+                        size_t index_actual);
 
-    /*
-     * Idem con el método anterior, pero al ser la primer accion no le agrega un espacio adelante.
-     * */
-    void agregar_primer_accion(const std::string& accion, std::vector<char>& datos,
-                               int& cantAcciones);
 
 public:
 

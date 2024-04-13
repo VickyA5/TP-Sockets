@@ -21,7 +21,7 @@ int Servidor::establecer_conexion() {
         recibir_acciones(&conectado);
         if (!conectado)
             break;
-        enviar_mensaje();
+        enviar_respuesta();
     }
     return 0;
 }
@@ -42,10 +42,10 @@ void Servidor::recibir_acciones(bool* conectado) {
     acciones = protocolo.interpretar_acciones(acciones_recibidas, cantAcciones);
 }
 
-void Servidor::enviar_mensaje() {
+void Servidor::enviar_respuesta() {
     bool was_closed = false;
     uint16_t header = acciones.size();
-    //header = ntohs(header);
+    //header = htons(header);
     aceptador.sendall(&header, sizeof(uint16_t), &was_closed);
     aceptador.sendall(acciones.data(),
                       acciones.size() * sizeof(char),

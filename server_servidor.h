@@ -38,13 +38,7 @@ public:
      * Envía las acciones ya con los combos correspondientes al socket del cliente
      * de forma serializada.
      * */
-    void enviar_mensaje();
-
-    /*
-     * Devuelve las acciones serializadas teniendo en cuenta la conversión de
-     * endiannes necesaria.
-     * */
-    std::vector<char> serializar_acciones();
+    void enviar_respuesta();
 
     /*
      * Imprime por pantalla el numero de acciones realizadas.
