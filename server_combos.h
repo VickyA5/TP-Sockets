@@ -63,7 +63,6 @@ private:
 
 
 public:
-
     /*
      * Dada la serie de acciones, identifica los combos y devuelve la serie de acciones
      * con los combos correspondientes. Debe recibir una serie de acciones válida que
@@ -71,8 +70,7 @@ public:
      * Además, actualiza la cantidad de acciones realizada. cantAcciones debe estar
      * previamente inicializado.
      * */
-    std::vector<char> interpretar_acciones(const std::vector<uint8_t>& buffer,
-                                           int& cantAcciones);
+    std::vector<char> interpretar_acciones(const std::vector<uint8_t>& buffer, int& cantAcciones);
 };
 
 #endif  // SOCKETS_2024C1_VICKYA5_SERVERCOMBOS_H

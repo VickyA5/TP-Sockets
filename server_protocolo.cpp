@@ -1,8 +1,7 @@
 
 #include "server_protocolo.h"
 
-ServidorProtocolo::ServidorProtocolo(const char* nombre_aceptador):
-        aceptador(nombre_aceptador) {
+ServidorProtocolo::ServidorProtocolo(const char* nombre_aceptador): aceptador(nombre_aceptador) {
 
     this->cantAcciones = 0;
     Socket peer = aceptador.accept();
@@ -27,16 +26,12 @@ void ServidorProtocolo::recibir_acciones(bool* conectado) {
 void ServidorProtocolo::enviar_respuesta() {
     bool was_closed = false;
     uint16_t header = acciones.size();
-    //header = htons(header);
+    // header = htons(header);
     aceptador.sendall(&header, sizeof(uint16_t), &was_closed);
-    aceptador.sendall(acciones.data(),
-                      acciones.size() * sizeof(char),
-                      &was_closed);
+    aceptador.sendall(acciones.data(), acciones.size() * sizeof(char), &was_closed);
     if (was_closed) {
         throw std::runtime_error("Error: se cerro el socket del cliente.");
     }
 }
 
-int ServidorProtocolo::getCantidadAcciones() const {
-    return cantAcciones;
-}
+int ServidorProtocolo::getCantidadAcciones() const { return cantAcciones; }

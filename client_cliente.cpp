@@ -1,9 +1,12 @@
 
 #include "client_cliente.h"
-#include <fstream>
 
-Cliente::Cliente(const char* hostname, const char* servicio) :
-        clienteProtocolo(hostname, servicio){}
+#include <fstream>
+#include <string>
+#include <vector>
+
+Cliente::Cliente(const char* hostname, const char* servicio):
+        clienteProtocolo(hostname, servicio) {}
 
 /*int Cliente::ejecutar() {
     std::string linea;

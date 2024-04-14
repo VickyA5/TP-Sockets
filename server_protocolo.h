@@ -3,7 +3,9 @@
 #define SOCKETS_2024C1_VICKYA5_SERVIDOR_PROTOCOLO_H
 
 #include <iostream>
+#include <utility>
 #include <vector>
+
 #include "common_socket.h"
 #include "server_combos.h"
 

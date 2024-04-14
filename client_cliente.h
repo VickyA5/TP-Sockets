@@ -2,6 +2,8 @@
 #ifndef SOCKETS_2024C1_VICKYA5_CLIENT_CLIENTE_H
 #define SOCKETS_2024C1_VICKYA5_CLIENT_CLIENTE_H
 
+#include <vector>
+
 #include "client_protocolo.h"
 #define ERROR -1
 

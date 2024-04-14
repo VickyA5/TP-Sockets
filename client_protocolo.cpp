@@ -14,7 +14,7 @@ ClientProtocolo::ClientProtocolo(const char* hostname, const char* servicio):
                   {"DUCK", 0x04},
                   {"HIT", 0x05}}) {}
 
-//QUIZAS QUE EL DICCIONARIO SEA UNA CLASE PARA USARLO TAMB EN SERVER PROTOCOLO?
+// QUIZAS QUE EL DICCIONARIO SEA UNA CLASE PARA USARLO TAMB EN SERVER PROTOCOLO?
 
 void ClientProtocolo::enviar_acciones(const std::string& linea) {
     std::vector<uint8_t> serializado = serializar(linea);
@@ -49,9 +49,9 @@ std::vector<char> ClientProtocolo::recibir_respuesta() {
     bool was_closed_tamanio = false;
     socket.recvall(&tamanio_respuesta, BYTES_HEADER, &was_closed_tamanio);
     if (was_closed_tamanio) {
-       throw std::runtime_error("No se pudo recibir la respuesta del servidor\n");
+        throw std::runtime_error("No se pudo recibir la respuesta del servidor\n");
     }
-    //tamanio_respuesta = ntohs(tamanio_respuesta);
+    // tamanio_respuesta = ntohs(tamanio_respuesta);
     int bytes_recibir = tamanio_respuesta * sizeof(char);
     std::vector<char> respuesta(bytes_recibir);
     bool was_closed_mensaje = false;

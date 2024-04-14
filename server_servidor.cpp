@@ -1,10 +1,7 @@
 
 #include "server_servidor.h"
-#include <utility>
-#include <arpa/inet.h>
 
-Servidor::Servidor(const char* nombre_aceptador): servidorProtocolo(nombre_aceptador) {
-}
+Servidor::Servidor(const char* nombre_aceptador): servidorProtocolo(nombre_aceptador) {}
 
 int Servidor::establecer_conexion() {
     bool conectado = true;
@@ -16,7 +13,6 @@ int Servidor::establecer_conexion() {
     }
     return 0;
 }
-
 
 
 void Servidor::imprimir_cant_acciones() {

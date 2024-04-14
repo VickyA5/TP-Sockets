@@ -6,13 +6,13 @@
 
 // Interpreta de a una linea de acciones hasta encontrar un NOP.
 std::vector<char> ServidorCombos::interpretar_acciones(const std::vector<uint8_t>& buffer,
-                                                          int& cantAcciones) {
+                                                       int& cantAcciones) {
     std::vector<char> acciones_interpretadas;
     size_t i = 0;
     while (i < buffer.size()) {
         uint8_t accion_actual = buffer[i];
         switch (accion_actual) {
-            case NOP_P:     // "P" de protocolo (el valor hexadecimal)
+            case NOP_P:  // "P" de protocolo (el valor hexadecimal)
                 return acciones_interpretadas;
             case JUMP_P:
                 interpretar_jump(buffer, i, acciones_interpretadas, cantAcciones);
@@ -41,13 +41,12 @@ std::vector<char> ServidorCombos::interpretar_acciones(const std::vector<uint8_t
 void ServidorCombos::avanzar_buffer(size_t& index, size_t cantidad) { index += cantidad; }
 
 void ServidorCombos::interpretar_jump(const std::vector<uint8_t>& buffer, size_t& index,
-                                         std::vector<char>& acciones_interpretadas,
-                                         int& cantAcciones) {
+                                      std::vector<char>& acciones_interpretadas,
+                                      int& cantAcciones) {
 
     if (index + 2 < buffer.size() && buffer[index + 1] == 0x01 && buffer[index + 2] == 0x05) {
 
-        agregar_accion(UPPERCUT_S, acciones_interpretadas, cantAcciones,
-                       index);
+        agregar_accion(UPPERCUT_S, acciones_interpretadas, cantAcciones, index);
         avanzar_buffer(index, 3);
     } else {
         agregar_accion(JUMP_S, acciones_interpretadas, cantAcciones, index);
@@ -56,8 +55,8 @@ void ServidorCombos::interpretar_jump(const std::vector<uint8_t>& buffer, size_t
 }
 
 void ServidorCombos::interpretar_left(const std::vector<uint8_t>& buffer, size_t& index,
-                                         std::vector<char>& acciones_interpretadas,
-                                         int& cantAcciones) {
+                                      std::vector<char>& acciones_interpretadas,
+                                      int& cantAcciones) {
     if (index + 3 < buffer.size() && buffer[index + 1] == 0x02 && buffer[index + 2] == 0x01 &&
         buffer[index + 3] == 0x05) {
         agregar_accion(HIGHKICK_S, acciones_interpretadas, cantAcciones, index);
@@ -69,8 +68,7 @@ void ServidorCombos::interpretar_left(const std::vector<uint8_t>& buffer, size_t
 }
 
 void ServidorCombos::interpretar_hit(const std::vector<uint8_t>& buffer, size_t& index,
-                                        std::vector<char>& acciones_interpretadas,
-                                        int& cantAcciones) {
+                                     std::vector<char>& acciones_interpretadas, int& cantAcciones) {
     if (index + 2 < buffer.size() && buffer[index + 1] == 0x04 && buffer[index + 2] == 0x03) {
         agregar_accion(SIDEKICK_S, acciones_interpretadas, cantAcciones, index);
         avanzar_buffer(index, 3);
@@ -78,22 +76,20 @@ void ServidorCombos::interpretar_hit(const std::vector<uint8_t>& buffer, size_t&
     } else {
         agregar_accion(HIT_S, acciones_interpretadas, cantAcciones, index);
         avanzar_buffer(index, 1);
-
     }
 }
 
-void ServidorCombos::agregar_accion(const std::string& accion,
-                                       std::vector<char>& datos,
-                                       int& cantAcciones,
-                                       size_t index_actual) {
-    if (index_actual != 0){
+void ServidorCombos::agregar_accion(const std::string& accion, std::vector<char>& datos,
+                                    int& cantAcciones, size_t index_actual) {
+    if (index_actual != 0) {
         char espacio = 32;  // Espacio en ascii
         datos.push_back(espacio);
     }
-
-    for (char c : accion) {
-        datos.push_back(c);
-    }
+    /*
+        for (char c: accion) {
+            datos.push_back(c);
+        }*/
+    std::copy(accion.begin(), accion.end(), std::back_inserter(datos));
 
     cantAcciones += 1;
 }
