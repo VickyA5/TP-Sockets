@@ -1,102 +1,42 @@
 
 #include "server_protocolo.h"
 
-#include <algorithm>
-#include <string>
+ServidorProtocolo::ServidorProtocolo(const char* nombre_aceptador):
+        aceptador(nombre_aceptador) {
 
-// Interpreta de a una linea de acciones hasta encontrar un NOP.
-std::vector<char> ServidorProtocolo::interpretar_acciones(const std::vector<uint8_t>& buffer,
-                                                              int& cantAcciones) {
-    std::vector<char> acciones_interpretadas;
-    size_t i = 0;
-    while (i < buffer.size()) {
-        uint8_t accion_actual = buffer[i];
-        switch (accion_actual) {
-            case NOP_P:     // "P" de protocolo (el valor hexadecimal)
-                return acciones_interpretadas;
-            case JUMP_P:
-                interpretar_jump(buffer, i, acciones_interpretadas, cantAcciones);
-                break;
-            case RIGHT_P:
-                agregar_accion(RIGHT_S, acciones_interpretadas, cantAcciones, i);
-                avanzar_buffer(i, 1);
-                break;
-            case LEFT_P:
-                interpretar_left(buffer, i, acciones_interpretadas, cantAcciones);
-                break;
-            case DUCK_P:
-                agregar_accion(DUCK_S, acciones_interpretadas, cantAcciones, i);
-                avanzar_buffer(i, 1);
-                break;
-            case HIT_P:
-                interpretar_hit(buffer, i, acciones_interpretadas, cantAcciones);
-                break;
-            default:
-                throw std::runtime_error("Error: se detectó una acción inválida.");
+    this->cantAcciones = 0;
+    Socket peer = aceptador.accept();
+    aceptador = std::move(peer);
+}
+
+void ServidorProtocolo::recibir_acciones(bool* conectado) {
+    bool was_closed = false;
+    char accion_actual = -1;
+    std::vector<uint8_t> acciones_recibidas;
+    while (accion_actual != 0x00) {
+        aceptador.recvall(&accion_actual, sizeof(char), &was_closed);
+        if (was_closed) {
+            *conectado = false;
+            return;
         }
+        acciones_recibidas.push_back(accion_actual);
     }
-    // Llega acá si el combo estaba al final de la serie de acciones
-    return acciones_interpretadas;
+    acciones = servidorCombos.interpretar_acciones(acciones_recibidas, cantAcciones);
 }
 
-void ServidorProtocolo::avanzar_buffer(size_t& index, size_t cantidad) { index += cantidad; }
-
-
-//REFACTORIZAR
-void ServidorProtocolo::interpretar_jump(const std::vector<uint8_t>& buffer, size_t& index,
-                                         std::vector<char>& acciones_interpretadas,
-                                         int& cantAcciones) {
-
-    if (index + 2 < buffer.size() && buffer[index + 1] == 0x01 && buffer[index + 2] == 0x05) {
-
-        agregar_accion(UPPERCUT_S, acciones_interpretadas, cantAcciones,
-                           index);
-        avanzar_buffer(index, 3);
-    } else {
-        agregar_accion(JUMP_S, acciones_interpretadas, cantAcciones, index);
-        avanzar_buffer(index, 1);
+void ServidorProtocolo::enviar_respuesta() {
+    bool was_closed = false;
+    uint16_t header = acciones.size();
+    //header = htons(header);
+    aceptador.sendall(&header, sizeof(uint16_t), &was_closed);
+    aceptador.sendall(acciones.data(),
+                      acciones.size() * sizeof(char),
+                      &was_closed);
+    if (was_closed) {
+        throw std::runtime_error("Error: se cerro el socket del cliente.");
     }
 }
 
-void ServidorProtocolo::interpretar_left(const std::vector<uint8_t>& buffer, size_t& index,
-                                         std::vector<char>& acciones_interpretadas,
-                                         int& cantAcciones) {
-    if (index + 3 < buffer.size() && buffer[index + 1] == 0x02 && buffer[index + 2] == 0x01 &&
-        buffer[index + 3] == 0x05) {
-        agregar_accion(HIGHKICK_S, acciones_interpretadas, cantAcciones, index);
-        avanzar_buffer(index, 4);
-    } else {
-        agregar_accion(LEFT_S, acciones_interpretadas, cantAcciones, index);
-        avanzar_buffer(index, 1);
-    }
-}
-
-void ServidorProtocolo::interpretar_hit(const std::vector<uint8_t>& buffer, size_t& index,
-                                        std::vector<char>& acciones_interpretadas,
-                                        int& cantAcciones) {
-    if (index + 2 < buffer.size() && buffer[index + 1] == 0x04 && buffer[index + 2] == 0x03) {
-        agregar_accion(SIDEKICK_S, acciones_interpretadas, cantAcciones, index);
-        avanzar_buffer(index, 3);
-
-    } else {
-        agregar_accion(HIT_S, acciones_interpretadas, cantAcciones, index);
-            avanzar_buffer(index, 1);
-
-    }
-}
-
-void ServidorProtocolo::agregar_accion(const std::string& accion,
-                                       std::vector<char>& datos,
-                                       int& cantAcciones,
-                                       size_t index_actual) {
-    if (index_actual != 0){
-        char espacio = 32;  // Espacio en ascii
-        datos.push_back(espacio);
-    }
-
-    for (char c : accion) {
-        datos.push_back(c);
-    }
-
-    cantAcciones += 1;
+int ServidorProtocolo::getCantidadAcciones() const {
+    return cantAcciones;
 }

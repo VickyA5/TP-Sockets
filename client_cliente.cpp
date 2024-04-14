@@ -2,8 +2,6 @@
 #include "client_cliente.h"
 #include <fstream>
 
-#define ERROR -1
-
 Cliente::Cliente(const char* hostname, const char* servicio) :
         clienteProtocolo(hostname, servicio){}
 

@@ -3,6 +3,7 @@
 #define SOCKETS_2024C1_VICKYA5_CLIENT_CLIENTE_H
 
 #include "client_protocolo.h"
+#define ERROR -1
 
 class Cliente {
 private:
