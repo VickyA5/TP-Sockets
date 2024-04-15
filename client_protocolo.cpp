@@ -8,7 +8,7 @@ ClientProtocolo::ClientProtocolo(const char* hostname, const char* servicio):
 
 
 void ClientProtocolo::enviar_acciones(const std::string& linea) {
-    std::vector<uint8_t> serializado = serializar(linea);
+    std::vector<uint8_t> serializado = mapaAcciones.serializar(linea);
     bool fue_cerrado = false;
     uint8_t tamanio = sizeof(uint8_t) * serializado.size();
     socket.sendall(serializado.data(), tamanio, &fue_cerrado);
@@ -16,23 +16,6 @@ void ClientProtocolo::enviar_acciones(const std::string& linea) {
         throw std::runtime_error("Error: no se pudo enviar el mensaje del cliente, "
                                  "el socket del server se cerro");
     }
-}
-
-std::vector<uint8_t> ClientProtocolo::serializar(const std::string& acciones) {
-    std::istringstream accion_stream(acciones);
-    std::string accion;
-    std::vector<uint8_t> resultado;
-    accion_stream >> std::ws;
-    while (std::getline(accion_stream, accion, ' ')) {
-        if (!accion.empty()) {
-            int codigoAccion = mapaAcciones.obtenerValor(accion);
-            if (codigoAccion != -1) {
-                resultado.push_back(static_cast<uint8_t>(codigoAccion));
-            }
-        }
-    }
-    resultado.push_back(mapaAcciones.obtenerValor("NOP"));
-    return resultado;
 }
 
 std::vector<char> ClientProtocolo::recibir_respuesta() {

@@ -19,12 +19,6 @@ private:
     Socket socket;
     MapaAcciones mapaAcciones;
 
-    /*
-     * Recibe una serie de acciones, toma cada una por separado y la serializa
-     * de acuerdo con el protocolo del juego. Luego las devuelve en un vector.
-     */
-    std::vector<uint8_t> serializar(const std::string& acciones);
-
 public:
     ClientProtocolo(const char* hostname, const char* servicio);
 

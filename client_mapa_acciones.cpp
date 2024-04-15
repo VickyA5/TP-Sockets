@@ -17,3 +17,20 @@ int MapaAcciones::obtenerValor(const std::string& nombreAccion) const {
         return -1;
     }
 }
+
+std::vector<uint8_t> MapaAcciones::serializar(const std::string& linea) {
+    std::istringstream accion_stream(linea);
+    std::string accion;
+    std::vector<uint8_t> resultado;
+    accion_stream >> std::ws;
+    while (std::getline(accion_stream, accion, ' ')) {
+        if (!accion.empty()) {
+            auto it = mapaAcciones.find(accion);
+            if (it != mapaAcciones.end()) {
+                resultado.push_back(it->second);
+            }
+        }
+    }
+    resultado.push_back(mapaAcciones.at("NOP"));
+    return resultado;
+}
