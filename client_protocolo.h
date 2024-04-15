@@ -8,6 +8,7 @@
 #include <unordered_map>
 #include <vector>
 
+#include "client_mapa_acciones.h"
 #include "common_socket.h"
 
 #define BYTES_HEADER 2
@@ -16,7 +17,7 @@ class ClientProtocolo {
 
 private:
     Socket socket;
-    const std::unordered_map<std::string, unsigned char> acciones;
+    MapaAcciones mapaAcciones;
 
     /*
      * Recibe una serie de acciones, toma cada una por separado y la serializa
@@ -28,19 +29,14 @@ public:
     ClientProtocolo(const char* hostname, const char* servicio);
 
     /*
-     * Envía al socket las acciones serializadas sin modificarlas.
+     * Envía al socket las acciones serializadas con un NOP al final.
      */
     void enviar_acciones(const std::string& linea);
 
     /*
-     *
+     * Recibe la respuesta del servidor en un vector de chars y la devuelve.
      * */
     std::vector<char> recibir_respuesta();
-
-    /*
-     *
-     * */
-    std::vector<char> convertir_endianness(std::vector<uint16_t> vector);
 };
 
 

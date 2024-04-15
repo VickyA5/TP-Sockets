@@ -8,25 +8,6 @@
 Cliente::Cliente(const char* hostname, const char* servicio):
         clienteProtocolo(hostname, servicio) {}
 
-/*int Cliente::ejecutar() {
-    std::string linea;
-    std::string nombre_archivo;
-    std::cin >> nombre_archivo;
-    std::ifstream archivo(nombre_archivo);
-    if (!archivo.is_open()) {
-        return ERROR;
-    }
-    while (std::getline(archivo, linea, '\n')) {
-        if (!linea.empty()) {
-            clienteProtocolo.enviar_acciones(linea);
-            std::vector<char> respuesta = clienteProtocolo.recibir_respuesta();
-            imprimir_acciones(respuesta);
-        }
-    }
-    archivo.close();
-    return 0;
-}*/
-
 void Cliente::ejecutar() {
     std::string linea;
     while (std::getline(std::cin, linea, '\n')) {

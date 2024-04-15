@@ -14,7 +14,6 @@ int Servidor::establecer_conexion() {
     return 0;
 }
 
-
 void Servidor::imprimir_cant_acciones() {
     std::cout << "Actions: " << servidorProtocolo.getCantidadAcciones() << std::endl;
 }

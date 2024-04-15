@@ -1,5 +1,6 @@
 
 #include "server_protocolo.h"
+
 #include <netinet/in.h>
 
 ServidorProtocolo::ServidorProtocolo(const char* nombre_aceptador): aceptador(nombre_aceptador) {
@@ -13,7 +14,7 @@ void ServidorProtocolo::recibir_acciones(bool* conectado) {
     bool was_closed = false;
     char accion_actual = -1;
     std::vector<uint8_t> acciones_recibidas;
-    while (accion_actual != 0x00) {
+    while (accion_actual != NOP_P) {
         aceptador.recvall(&accion_actual, sizeof(char), &was_closed);
         if (was_closed) {
             *conectado = false;

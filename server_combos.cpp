@@ -4,7 +4,6 @@
 #include <algorithm>
 #include <string>
 
-// Interpreta de a una linea de acciones hasta encontrar un NOP.
 std::vector<char> ServidorCombos::interpretar_acciones(const std::vector<uint8_t>& buffer,
                                                        int& cantAcciones) {
     std::vector<char> acciones_interpretadas;

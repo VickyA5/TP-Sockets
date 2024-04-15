@@ -23,7 +23,7 @@ public:
     int establecer_conexion();
 
     /*
-     * Imprime por pantalla el numero de acciones realizadas.
+     * Imprime por pantalla el número de acciones realizadas.
      * */
     void imprimir_cant_acciones();
 };

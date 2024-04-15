@@ -32,7 +32,7 @@ private:
 
     /*
      * Interpreta las acciones próximas a un jump. Si hay un combo que comienza en el jump,
-     * concatena el combo al vector de acciones interpretadas. En caso contrario solamente
+     * concatena el combo al vector de acciones interpretadas. En caso contrario, solamente
      * concatena el jump.
      * */
     void interpretar_jump(const std::vector<uint8_t>& buffer, size_t& index,
@@ -40,7 +40,7 @@ private:
 
     /*
      * Interpreta las acciones próximas a un left. Si hay un combo que comienza en el left,
-     * concatena el combo al vector de acciones interpretadas. En caso contrario solamente
+     * concatena el combo al vector de acciones interpretadas. En caso contrario, solamente
      * concatena el left.
      * */
     void interpretar_left(const std::vector<uint8_t>& buffer, size_t& index,
@@ -48,7 +48,7 @@ private:
 
     /*
      * Interpreta las acciones próximas a un hit. Si hay un combo que comienza en el hit,
-     * concatena el combo al vector de acciones interpretadas. En caso contrario solamente
+     * concatena el combo al vector de acciones interpretadas. En caso contrario, solamente
      * concatena el hit.
      * */
     void interpretar_hit(const std::vector<uint8_t>& buffer, size_t& index,
@@ -67,7 +67,7 @@ public:
      * Dada la serie de acciones, identifica los combos y devuelve la serie de acciones
      * con los combos correspondientes. Debe recibir una serie de acciones válida que
      * finalice con NOP (00).
-     * Además, actualiza la cantidad de acciones realizada. cantAcciones debe estar
+     * Además, actualiza la cantidad de acciones realizadas. cantAcciones debe estar
      * previamente inicializado.
      * */
     std::vector<char> interpretar_acciones(const std::vector<uint8_t>& buffer, int& cantAcciones);

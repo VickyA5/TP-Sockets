@@ -9,6 +9,7 @@
 #include "common_socket.h"
 #include "server_combos.h"
 
+
 class ServidorProtocolo {
 
 
@@ -22,9 +23,9 @@ public:
     explicit ServidorProtocolo(const char* nombre_aceptador);
 
     /*
-     * Recibe la serie de acciones serializadas del cliente y devuelve las acciones
-     * con los combos correspondientes en ascii. La interpretación de los combos
-     * se delega a ServidorProtocolo.
+     * Recibe la serie de acciones serializadas del cliente y guarda las acciones
+     * con los combos correspondientes en ascii, delegando la interpretación de combos
+     * a servidorCombos.
      * */
     void recibir_acciones(bool* conectado);
 
