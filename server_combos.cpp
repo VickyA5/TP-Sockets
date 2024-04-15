@@ -85,11 +85,6 @@ void ServidorCombos::agregar_accion(const std::string& accion, std::vector<char>
         char espacio = 32;  // Espacio en ascii
         datos.push_back(espacio);
     }
-    /*
-        for (char c: accion) {
-            datos.push_back(c);
-        }*/
     std::copy(accion.begin(), accion.end(), std::back_inserter(datos));
-
     cantAcciones += 1;
 }

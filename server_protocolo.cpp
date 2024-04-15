@@ -1,5 +1,6 @@
 
 #include "server_protocolo.h"
+#include <netinet/in.h>
 
 ServidorProtocolo::ServidorProtocolo(const char* nombre_aceptador): aceptador(nombre_aceptador) {
 
@@ -26,7 +27,7 @@ void ServidorProtocolo::recibir_acciones(bool* conectado) {
 void ServidorProtocolo::enviar_respuesta() {
     bool was_closed = false;
     uint16_t header = acciones.size();
-    // header = htons(header);
+    header = ntohs(header);
     aceptador.sendall(&header, sizeof(uint16_t), &was_closed);
     aceptador.sendall(acciones.data(), acciones.size() * sizeof(char), &was_closed);
     if (was_closed) {

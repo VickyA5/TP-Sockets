@@ -1,8 +1,6 @@
 
 #include "client_protocolo.h"
-
 #include <netinet/in.h>
-
 #include "common_liberror.h"
 
 ClientProtocolo::ClientProtocolo(const char* hostname, const char* servicio):
@@ -51,7 +49,7 @@ std::vector<char> ClientProtocolo::recibir_respuesta() {
     if (was_closed_tamanio) {
         throw std::runtime_error("No se pudo recibir la respuesta del servidor\n");
     }
-    // tamanio_respuesta = ntohs(tamanio_respuesta);
+    tamanio_respuesta = htons(tamanio_respuesta);
     int bytes_recibir = tamanio_respuesta * sizeof(char);
     std::vector<char> respuesta(bytes_recibir);
     bool was_closed_mensaje = false;
@@ -61,18 +59,3 @@ std::vector<char> ClientProtocolo::recibir_respuesta() {
     }
     return respuesta;
 }
-
-/*
-std::vector<char> ClientProtocolo::convertir_endianness(const std::vector<uint16_t> buffer) {
-
-    size_t tam_buffer_convertido = buffer.size() - 1;
-    std::vector<char> buffer_convertido(tam_buffer_convertido);
-    // La primera posición es del header, las descarto
-    for (size_t i = 1; i < tam_buffer_convertido; i++) {
-        uint16_t convertido_dos_bytes = ntohs(buffer[i]);
-        char convertido_byte_menos_significativo = (char) convertido_dos_bytes;
-        buffer_convertido[i-1] = convertido_byte_menos_significativo;
-    }
-
-    return buffer_convertido;
-}*/
