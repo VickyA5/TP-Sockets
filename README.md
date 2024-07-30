@@ -15,11 +15,10 @@ Esto generara los ejecutables
 
 * Para ejecutar el servidor
 
-`./server <puerto>
+`./server <puerto>`
 * Para ejecutar el cliente
 
-`./client <hostname> <servicio>
-
+`./client <hostname> <servicio>`
 
 ## Modelo
 
